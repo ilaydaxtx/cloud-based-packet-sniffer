@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captured Packets</title>
+</head>
+<body>
+    <h1>Captured Packets</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Source IP</th>
+                <th>Destination IP</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for src_ip, dst_ip in packet_info %}
+            <tr>
+                <td>{{ src_ip }}</td>
+                <td>{{ dst_ip }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
