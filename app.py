@@ -50,6 +50,22 @@ def start_capture():
         return redirect(url_for('show_packets'))
     else:
         return "Method Not Allowed", 405
+    
+
+@app.route('/create_table')
+def create_table():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute('''CREATE TABLE IF NOT EXISTS packet_data (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        data VARCHAR(255)
+                        )''')  # Define the structure of your table here
+        mysql.connection.commit()
+        cur.close()
+        return "Table created successfully"  # Adjust the response message as needed
+    except Exception as e:
+        return f"An error occurred: {e}"
+
 
 # Route to display captured packets
 @app.route('/packets')
