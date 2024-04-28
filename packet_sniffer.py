@@ -1,16 +1,23 @@
 import struct
 import time
-import socket
 from scapy.all import sniff
 
-def capture_packets(packet_count):
+
+def capture_packets(packet_count, filter_criteria=None, search_keyword=None):
     try:
         with open("captured_packets.pcap", "wb") as pcap_file:
             # Write pcap file header
             pcap_file.write(struct.pack("@ IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 65535, 1))
 
-            # Sniff packets
-            packets = sniff(count=packet_count, iface="Wi-Fi")  # Use "Wi-Fi" as the network interface
+            # Sniff packets with optional filtering
+            if filter_criteria:
+                packets = sniff(count=packet_count, filter=filter_criteria)
+            else:
+                packets = sniff(count=packet_count)
+
+            # Filter packets based on search keyword
+            if search_keyword:
+                packets = [packet for packet in packets if search_keyword in str(packet)]
 
             # Write each packet to the pcap file
             for packet in packets:
@@ -24,4 +31,8 @@ def capture_packets(packet_count):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+# Example usage:
+# Capture 25 packets without filtering or searching
 capture_packets(5)
+
+

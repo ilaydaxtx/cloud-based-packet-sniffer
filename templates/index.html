@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="./style.css">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Packet Sniffer</title>
 </head>
 <body>
-    <h1 class="title">Welcome to the Packet Sniffer</h1>
-    <p class="btn-title">Click the button below to start capturing packets:</p>
-    <form action="/capture" method="post">
-        <button class="btn" type="submit">Start Capture</button>
-    </form>
+    <div class="navbar">
+        <h1 class="title">Packet Sniffer</h1>
+        <p class="nav-item">CENG 304/314 Final Project</p>
+        <p class="nav-item">Made By İlayda Nihan Toku</p>
+        <button class="nav-item-btn">Contact Me</button>
+        
+    </div>
+    <div class="button">
+        <p class="btn-title">Click the button below to start capturing packets:</p>
+        <form action="/capture" method="post">
+            <button class="btn" type="submit">
+            Start Capture
+            </button>
+        
+        </form>
+    </div>
     
 </body>
 </html>

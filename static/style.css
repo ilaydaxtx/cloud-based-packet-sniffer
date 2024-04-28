@@ -1,0 +1,70 @@
+body{
+    background-color: rgb(234, 239, 239);
+}
+.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    box-shadow: 0px 2px 4px rgba(136, 135, 135, 0.393);
+    border-radius: 10px;
+}
+
+h1{
+    font-size: 50px;
+    color: #43597d;
+    margin-left: 10px;
+    
+}
+.nav-item {
+    margin: 5px;
+    color: #a0c0d6;
+}
+.nav-item:hover{
+    color: rgb(60, 58, 58);
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: ease 0.3s;
+}
+.nav-item-btn {
+    border: none;
+    outline: none;
+    background-color: #de7456;
+    border-radius: 30px;
+    padding: 15px;
+    margin: 10px;
+    color: aliceblue;
+}
+.nav-item-btn:hover{
+    background-color: rgb(117, 112, 112);
+    color: aliceblue;
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: ease 0.3s;
+}
+.btn{
+    outline: none;
+    border: none;
+    background-color: #de7456;
+    padding: 10px;
+    border-radius: 30px;
+}
+.btn:hover{
+    background-color: #9082f7;
+    color: aliceblue;
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: ease 0.3s;
+}
+.button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.btn-title{
+    font-size: 20px;
+    color: #2b3240;
+}
+

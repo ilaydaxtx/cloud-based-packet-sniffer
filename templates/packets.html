@@ -4,21 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Captured Packets</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
 </head>
 <body>
     <h1>Captured Packets</h1>
+    <form action="/filter" method="post">
+        <h2>Filter Packets</h2>
+        <label for="filter_ip">Source/Destination IP:</label>
+        <input type="text" id="filter_ip" name="filter_ip">
+        
+        <label for="filter_protocol">Protocol:</label>
+        <select id="filter_protocol" name="filter_protocol">
+            <option value="tcp">TCP</option>
+            <option value="udp">UDP</option>
+            <option value="icmp">ICMP</option>
+        </select>
+        <button type="submit">Filter Packets</button>
+    </form>
     <table>
         <thead>
             <tr>
                 <th>Source IP</th>
                 <th>Destination IP</th>
+                <th>Protocol</th>
             </tr>
         </thead>
         <tbody>
-            {% for src_ip, dst_ip in packet_info %}
-            <tr>
+            {% for src_ip, dst_ip, protocol in packet_info %}
+            <tr {% if src_ip == searched_src_ip and dst_ip == searched_dst_ip %}class="highlight"{% endif %}>
                 <td>{{ src_ip }}</td>
                 <td>{{ dst_ip }}</td>
+                <td>{{ protocol }}</td>
             </tr>
             {% endfor %}
         </tbody>
