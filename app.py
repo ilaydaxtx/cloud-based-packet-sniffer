@@ -5,10 +5,20 @@ from flask import Flask, render_template, request, make_response
 from scapy.layers.inet import IP
 from scapy.all import rdpcap
 import packet_sniffer
+from flask import Flask
+from flask_mysqldb import MySQL
+
 
 
 
 app = Flask(__name__)
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'ilaydanhn'
+app.config['MYSQL_PASSWORD'] = 'howtorunlnx2002'
+app.config['MYSQL_DB'] = 'packet_data'
+mysql = MySQL(app)
+
 protocol_names = {
     6: 'TCP',
     17: 'UDP',
@@ -56,13 +66,12 @@ def show_packets():
 # Index route
 @app.route('/')
 def index():
-    return render_template('index.html')
-if __name__ == '__main__':
-    # Get the port number from the PORT environment variable
-    port = int(os.environ.get('PORT', 5000))
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM your_table')
+    data = cur.fetchall()
+    cur.close()
+    return str(data)
 
-    # Run the app on the specified port
-    app.run(host='0.0.0.0', port=port)
 
 @app.route("/filter", methods=["POST"])
 def filter_packets():
