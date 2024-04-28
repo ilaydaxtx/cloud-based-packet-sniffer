@@ -83,11 +83,15 @@ def show_packets():
 # Index route
 @app.route('/')
 def index():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM your_table')
-    data = cur.fetchall()
-    cur.close()
-    return str(data)
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM your_table')  # Replace 'your_table' with the actual table name
+        data = cur.fetchall()
+        cur.close()
+        return str(data)  # For demonstration, you can change this to render a template or format the data as needed
+    except Exception as e:
+        return f"An error occurred: {e}"
+
 
 
 @app.route("/filter", methods=["POST"])
