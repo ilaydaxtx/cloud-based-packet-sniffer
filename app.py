@@ -1,4 +1,5 @@
 import threading
+import os
 from flask import Flask, render_template, redirect, url_for, request
 from flask import Flask, render_template, request, make_response
 from scapy.layers.inet import IP
@@ -12,8 +13,9 @@ protocol_names = {
     6: 'TCP',
     17: 'UDP',
     1: 'ICMP',
-    
+
 }
+
 
 # Function to capture packets
 def capture_packets(packet_count):
@@ -55,6 +57,11 @@ def show_packets():
 @app.route('/')
 def index():
     return render_template('index.html')
+if __name__ == '__main__':
+    # Get the port number from the PORT environment variable
+    port = int(os.environ.get('PORT', 5000))
+    # Run the app on the specified port
+    app.run(host='0.0.0.0', port=port)
 
 @app.route("/filter", methods=["POST"])
 def filter_packets():
