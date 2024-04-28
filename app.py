@@ -1,11 +1,9 @@
 import threading
 import os
-from flask import Flask, render_template, redirect, url_for, request
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from scapy.layers.inet import IP
 from scapy.all import rdpcap
 import packet_sniffer
-from flask import Flask
 from flask_mysqldb import MySQL
 
 
@@ -51,6 +49,16 @@ def start_capture():
     else:
         return "Method Not Allowed", 405
     
+@app.route('/test_db_connection')
+def test_db_connection():
+    try:
+        # Attempt to establish a connection to the database
+        conn = mysql.connection
+        # If connection is successful, return a success message
+        return jsonify({'message': 'Database connection successful!'})
+    except Exception as e:
+        # If connection fails, return an error message
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/create_table')
 def create_table():
