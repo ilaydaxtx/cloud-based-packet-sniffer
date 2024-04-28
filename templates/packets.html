@@ -8,37 +8,42 @@
         .highlight {
             background-color: yellow;
         }
+        
     </style>
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+    />
 </head>
 <body>
-    <h1>Captured Packets</h1>
-    <form action="/filter" method="post">
-        <h2>Filter Packets</h2>
-        <label for="filter_ip">Source/Destination IP:</label>
-        <input type="text" id="filter_ip" name="filter_ip">
+    <h1 class="packets-title">Captured Packets</h1>
+    <form action="/filter" method="post" class="form-container"> 
+
+        <label for="filter_ip" class="srcdest-ip">Source/Destination IP:</label>
+        <input type="text" id="filter_ip" name="filter_ip" class="filter-label-srcdest">
         
-        <label for="filter_protocol">Protocol:</label>
-        <select id="filter_protocol" name="filter_protocol">
-            <option value="tcp">TCP</option>
-            <option value="udp">UDP</option>
-            <option value="icmp">ICMP</option>
+        <label for="filter_protocol" class="options-container-lbl">Protocol:</label>
+        <select id="filter_protocol" name="filter_protocol" class="options-container">
+            <option value="tcp" class="options">TCP</option>
+            <option value="udp" class="options">UDP</option>
+            <option value="icmp" class="options">ICMP</option>
         </select>
-        <button type="submit">Filter Packets</button>
+        <button type="submit" class="filter-btn">Filter</button>
     </form>
-    <table>
+    <table class="table-container">
         <thead>
-            <tr>
-                <th>Source IP</th>
-                <th>Destination IP</th>
-                <th>Protocol</th>
+            <tr class="table-tr">
+                <th class="header-tbl">Source IP</th>
+                <th class="header-tbl">Destination IP</th>
+                <th class="header-tbl">Protocol</th>
             </tr>
         </thead>
         <tbody>
             {% for src_ip, dst_ip, protocol in packet_info %}
             <tr {% if src_ip == searched_src_ip and dst_ip == searched_dst_ip %}class="highlight"{% endif %}>
-                <td>{{ src_ip }}</td>
-                <td>{{ dst_ip }}</td>
-                <td>{{ protocol }}</td>
+                <td class="table-td">{{ src_ip }}</td>
+                <td class="table-td">{{ dst_ip }}</td>
+                <td class="table-td">{{ protocol }}</td>
             </tr>
             {% endfor %}
         </tbody>

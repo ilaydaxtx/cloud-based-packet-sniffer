@@ -4,10 +4,16 @@ from flask import Flask, render_template, request, make_response
 from scapy.layers.inet import IP
 from scapy.all import rdpcap
 import packet_sniffer
-from protocols import protocol_names
+
 
 
 app = Flask(__name__)
+protocol_names = {
+    6: 'TCP',
+    17: 'UDP',
+    1: 'ICMP',
+    
+}
 
 # Function to capture packets
 def capture_packets(packet_count):
@@ -25,7 +31,7 @@ def capture_packets(packet_count):
 def start_capture():
     if request.method == 'POST':
         # Start packet capture in a new thread
-        capture_thread = threading.Thread(target=capture_packets, args=(5,))  # Change packet_count as needed
+        capture_thread = threading.Thread(target=capture_packets, args=(25,))  # Change packet_count as needed
         capture_thread.start()
         
         return redirect(url_for('show_packets'))
@@ -52,21 +58,30 @@ def index():
 
 @app.route('/filter', methods=['POST'])
 def filter_packets():
-    filter_ip = request.form.get('filter_ip')
-    
-    filter_protocol = request.form.get('filter_protocol')
+    try:
+        filter_ip = request.form.get('filter_ip')
+        filter_protocol = request.form.get('filter_protocol')
 
-    # Perform packet filtering based on the filter criteria
-    # Implement your filtering logic here
+        packets = rdpcap("captured_packets.pcap")
+        filtered_packets = []
 
-    # Dummy example: Construct a response string
-    response_str = f"Filtered packets: IP={filter_ip}, Protocol={filter_protocol}"
+        for pkt in packets:
+            if IP in pkt:
+                # Check if the packet matches the IP filter
+                if filter_ip and (filter_ip != pkt[IP].src and filter_ip != pkt[IP].dst):
+                    continue
 
-    # Create a response object with the response string
-    response = make_response(response_str)
+                # Check if the packet matches the protocol filter
+                protocol_name = protocol_names.get(pkt[IP].proto, 'Unknown')
+                if filter_protocol and filter_protocol.lower() != protocol_name.lower():
+                    continue
 
-    # Return the response object
-    return response
+                # If packet matches all filters, add to the list
+                filtered_packets.append((pkt[IP].src, pkt[IP].dst, protocol_name))
+
+        return render_template('packets.html', packet_info=filtered_packets)
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 if __name__ == '__main__':
     app.run(debug=True)

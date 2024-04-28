@@ -33,6 +33,6 @@ def capture_packets(packet_count, filter_criteria=None, search_keyword=None):
 
 # Example usage:
 # Capture 25 packets without filtering or searching
-capture_packets(5)
+capture_packets(25)
 
 
