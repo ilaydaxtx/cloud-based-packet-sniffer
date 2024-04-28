@@ -1,4 +1,4 @@
 scapy==2.5.0
 Flask==3.0.3
-Werkzeug==2.2.2
+Werkzeug==3.0.2
 flask-mysqldb==0.2.0
