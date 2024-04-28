@@ -14,19 +14,21 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}"
     />
+    
+
 </head>
 <body>
     <h1 class="packets-title">Captured Packets</h1>
     <form action="/filter" method="post" class="form-container"> 
-
         <label for="filter_ip" class="srcdest-ip">Source/Destination IP:</label>
-        <input type="text" id="filter_ip" name="filter_ip" class="filter-label-srcdest">
-        
+        <input type="text" id="filter_ip" name="filter_ip" class="filter-label-srcdest" value="{{ filter_ip or '' }}">
+
         <label for="filter_protocol" class="options-container-lbl">Protocol:</label>
         <select id="filter_protocol" name="filter_protocol" class="options-container">
-            <option value="tcp" class="options">TCP</option>
-            <option value="udp" class="options">UDP</option>
-            <option value="icmp" class="options">ICMP</option>
+            <option value="" class="options">All</option>
+            <option value="tcp" class="options" {% if filter_protocol == 'tcp' %}selected{% endif %}>TCP</option>
+            <option value="udp" class="options" {% if filter_protocol == 'udp' %}selected{% endif %}>UDP</option>
+            <option value="icmp" class="options" {% if filter_protocol == 'icmp' %}selected{% endif %}>ICMP</option>
         </select>
         <button type="submit" class="filter-btn">Filter</button>
     </form>
@@ -40,7 +42,7 @@
         </thead>
         <tbody>
             {% for src_ip, dst_ip, protocol in packet_info %}
-            <tr {% if src_ip == searched_src_ip and dst_ip == searched_dst_ip %}class="highlight"{% endif %}>
+            <tr>
                 <td class="table-td">{{ src_ip }}</td>
                 <td class="table-td">{{ dst_ip }}</td>
                 <td class="table-td">{{ protocol }}</td>
@@ -48,5 +50,8 @@
             {% endfor %}
         </tbody>
     </table>
+    <form action="/packets" method="get">
+        <button type="submit" class="show-all-btn">Show All Packets</button>
+    </form>
 </body>
 </html>

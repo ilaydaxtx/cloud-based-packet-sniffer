@@ -1,4 +1,4 @@
-/* giris sayfa */
+/* first page */
 body{
     background-color: rgb(234, 239, 239);
 }
@@ -31,6 +31,7 @@ body{
 .nav-item-btn {
     border: none;
     outline: none;
+    text-decoration: none;
     background-color: #de7456;
     border-radius: 30px;
     padding: 15px;
@@ -165,5 +166,21 @@ body{
     transition: ease 0.3s;
     background-color: #4f545e65;
 }
+.show-all-btn {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #de7456;
+  }
+  .show-all-btn:hover{
+    transform: scale(1.05);
+    transition: ease 0.3s;
+    background-color: #4caf50;
+  }
 
 

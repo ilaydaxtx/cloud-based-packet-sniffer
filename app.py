@@ -56,30 +56,48 @@ def show_packets():
 def index():
     return render_template('index.html')
 
-@app.route('/filter', methods=['POST'])
+@app.route("/filter", methods=["POST"])
 def filter_packets():
     try:
-        filter_ip = request.form.get('filter_ip')
-        filter_protocol = request.form.get('filter_protocol')
+        filter_ip = request.form.get("filter_ip")
+        filter_protocol = request.form.get("filter_protocol")
 
         packets = rdpcap("captured_packets.pcap")
         filtered_packets = []
 
         for pkt in packets:
             if IP in pkt:
-                # Check if the packet matches the IP filter
-                if filter_ip and (filter_ip != pkt[IP].src and filter_ip != pkt[IP].dst):
-                    continue
+                if filter_ip:
+                    # Check if the packet matches the IP filter
+                    if filter_ip == pkt[IP].src or filter_ip == pkt[IP].dst:
+                        protocol_name = protocol_names.get(pkt[IP].proto, "Unknown")
+                        if filter_protocol:
+                            # Check if the packet matches the protocol filter
+                            if filter_protocol.lower() == protocol_name.lower():
+                                filtered_packets.append(
+                                    (pkt[IP].src, pkt[IP].dst, protocol_name)
+                                )
+                        else:
+                            # If no protocol filter is applied, add the packet
+                            filtered_packets.append(
+                                (pkt[IP].src, pkt[IP].dst, protocol_name)
+                            )
+                else:
+                    # If no IP filter is applied, add all packets
+                    filtered_packets.append(
+                        (
+                            pkt[IP].src,
+                            pkt[IP].dst,
+                            protocol_names.get(pkt[IP].proto, "Unknown"),
+                        )
+                    )
 
-                # Check if the packet matches the protocol filter
-                protocol_name = protocol_names.get(pkt[IP].proto, 'Unknown')
-                if filter_protocol and filter_protocol.lower() != protocol_name.lower():
-                    continue
-
-                # If packet matches all filters, add to the list
-                filtered_packets.append((pkt[IP].src, pkt[IP].dst, protocol_name))
-
-        return render_template('packets.html', packet_info=filtered_packets)
+        return render_template(
+            "packets.html",
+            packet_info=filtered_packets,
+            filter_ip=filter_ip,
+            filter_protocol=filter_protocol,
+        )
     except Exception as e:
         return f"An error occurred: {e}"
 
