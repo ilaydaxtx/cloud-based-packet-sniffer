@@ -1,4 +1,4 @@
 scapy==2.5.0
-Flask
+Flask== 2.1.3
 Werkzeug
 flask-mysqldb
